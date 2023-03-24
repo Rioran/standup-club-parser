@@ -38,6 +38,7 @@ def get_link_list(branch):
 
 
 def save_events(events_list):
+    '''Saves events list into binary file'''
     with open('events.bin', 'wb') as file:
         dump(events_list, file)
 
