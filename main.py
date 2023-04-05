@@ -54,16 +54,13 @@ print("begin")
 response = get(STANDUP_URL)
 
 if not response.status_code == 200:
-    print("code is not 200")
-    print(response)
-    raise
+    raise ValueError(f'Status code {response.status_code}is not 200\nResponse:{response}')
 
 tree = fromstring(response.text)
 events = tree.xpath(EVENTS_XPATH)
 
 if not len(events):
-    print("no events to scrap - structure changed?")
-    raise
+    raise ValueError("no events to scrap - structure changed?")
 
 print("events parsed:", len(events))
 parsed_events = []
