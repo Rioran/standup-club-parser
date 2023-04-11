@@ -1,6 +1,6 @@
 from lxml.html import fromstring
 from pickle import dump, load
-from requests import get
+from requests import get, exceptions
 
 
 TG_HOST = 'https://api.telegram.org'
@@ -53,17 +53,17 @@ def send_to_telegram(text: str):
 print("begin")
 response = get(STANDUP_URL)
 
-if not response.status_code == 200:
-    print("code is not 200")
-    print(response)
-    raise
+
+try:
+    response.raise_for_status()
+except exceptions.HTTPError as http_status_error:
+    print(http_status_error)
 
 tree = fromstring(response.text)
 events = tree.xpath(EVENTS_XPATH)
 
 if not len(events):
-    print("no events to scrap - structure changed?")
-    raise
+    raise ValueError("no events to scrap - structure changed?")
 
 print("events parsed:", len(events))
 parsed_events = []
