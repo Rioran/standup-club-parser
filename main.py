@@ -1,10 +1,13 @@
+from dotenv import load_dotenv
 from lxml.html import fromstring
+from os import environ
 from pickle import dump, load
 from requests import get, exceptions
 
+load_dotenv()
 
 TG_HOST = 'https://api.telegram.org'
-TG_TOKEN = 'place a real token here'
+TG_TOKEN = environ.get('TG_TOKEN')
 TG_GROUP = '-1001879088495'
 
 STANDUP_URL = 'http://aristandupclub.tilda.ws/'
@@ -52,7 +55,6 @@ def send_to_telegram(text: str):
 
 print("begin")
 response = get(STANDUP_URL)
-
 
 try:
     response.raise_for_status()
